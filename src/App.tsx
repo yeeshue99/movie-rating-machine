@@ -3,12 +3,14 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import tempCover from './assets/Test cover httyd.jpg'
+import emptyStar from './assets/empty star.png'
 
 
 
 function App() {
-  const [count, setCount] = useState(0)
-  const [rating, setRating] = useState(0)
+  const [count, setCount] = useState(0);
+  const [rating, setRating] = useState(0);
+  const [star, setStar] = useState(false)
   const phrases = useRef(null);
   const review = useRef(null);
   const handleonclick = () => {
@@ -27,8 +29,11 @@ function App() {
         </div>
       </div>
       <div>
-        <button onClick={() => setRating(1)}>
-          1 star
+        <button onClick={() => { setStar(prev => !prev); setRating(1); }} className={`starButton ${star ? "active" : "inactive"}`} id='oneStar'>
+          <svg viewBox='0 0 100 100' className='star-icon'>
+            <polygon points="50,0 61,35 98,35 68,57 79,91 50,70 21,91 32,57 2,35 39,35" />
+          </svg>
+
         </button>
         <button onClick={() => setRating(2)}>
           2 star
@@ -69,11 +74,6 @@ function App() {
       <button onClick={handleonclick}>
         Save Review
       </button>
-
-
-
-
-
 
 
       {/* <div>

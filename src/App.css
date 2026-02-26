@@ -10,9 +10,11 @@
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
@@ -38,7 +40,7 @@
 
 }
 
-.oneWordDesc{
+.oneWordDesc {
   width: 80vw;
   height: 10vw;
   max-width: 800px;
@@ -46,7 +48,7 @@
   resize: none;
 }
 
-.userReview{
+.userReview {
   width: 80vw;
   height: 30vw;
   max-width: 800px;
@@ -54,10 +56,38 @@
   resize: none;
 }
 
+.starButton {
+  height: 50px;
+  width: 50px;
+  border: none;
+  padding: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.star-icon {
+  height: 100%;
+  width: 100%;
+  transition: fill 0.3s;
+}
+
+.star-icon :hover {
+  fill: #c9b266;
+}
+
+.starButton.active .star-icon {
+  fill: gold;
+}
+
+.starButton.inactive .star-icon {
+  fill: black;
+}
+
 @keyframes logo-spin {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
