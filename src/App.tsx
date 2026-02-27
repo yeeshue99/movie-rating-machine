@@ -1,12 +1,8 @@
-import { useEffect, useRef, useState, useCallback } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+import { useCallback, useEffect, useRef, useState } from "react";
 import "./App.css";
 import tempCover from "./assets/Test cover httyd.jpg";
-import emptyStar from './assets/empty star.png'
-import "./App.css";
+import StarIcon from "./assets/star.svg?react";
 import { useDatabase } from "./db/Database";
-import "./App.css";
 
 const STORE = "movies";
 
@@ -19,21 +15,14 @@ interface Movie {
 }
 
 function App() {
-  const [count, setCount] = useState(0);
   const [rating, setRating] = useState(0);
-  const [star, setStar] = useState(false)
   const { connector, isLoading, error } = useDatabase();
 
   const [movies, setMovies] = useState<Movie[]>([]);
   const [title, setTitle] = useState("");
 
-
-  // i might need you to explain to me what this is and how to implement it into my current changes
-  // const [rating, setRating] = useState<number | "">("");
-
-
-  const phrases = useRef(null);
-  const review = useRef(null);
+  const phrases = useRef<HTMLTextAreaElement>(null);
+  const review = useRef<HTMLTextAreaElement>(null);
 
   const refresh = useCallback(async () => {
     const all = await connector.getAll<Movie>(STORE);
@@ -41,9 +30,13 @@ function App() {
   }, [connector]);
 
   const handleonclick = () => {
+    if (!phrases.current || !review.current) {
+      console.error("Textarea refs are not set");
+      return;
+    }
+    console.log("Phrases: " + phrases.current.value);
+    console.log("Review: " + review.current.value);
     console.log("rating " + rating);
-    console.log("phrases " + phrases.current.value);
-    console.log("review " + review.current.value);
   };
 
   useEffect(() => {
@@ -90,38 +83,75 @@ function App() {
         </div>
       </div>
       <div>
-        <button onClick={() => { setStar(prev => !prev); setRating(1); }} className={`starButton ${star ? "active" : "inactive"}`} id='oneStar'>
-          <svg viewBox='0 0 100 100' className='star-icon'>
-            <polygon points="50,0 61,35 98,35 68,57 79,91 50,70 21,91 32,57 2,35 39,35" />
-          </svg>
-
+        <button
+          onClick={() => setRating(1)}
+          className={`starButton ${rating >= 1 ? "active" : "inactive"}`}
+          id="oneStar"
+        >
+          <StarIcon className="star-icon" />
         </button>
-        <button onClick={() => setRating(2)}>
-          2 star
+        <button
+          onClick={() => setRating(2)}
+          className={`starButton ${rating >= 2 ? "active" : "inactive"}`}
+          id="twoStar"
+        >
+          <StarIcon className="star-icon" />
         </button>
-        <button onClick={() => setRating(3)}>
-          3 star
+        <button
+          onClick={() => setRating(3)}
+          className={`starButton ${rating >= 3 ? "active" : "inactive"}`}
+          id="threeStar"
+        >
+          <StarIcon className="star-icon" />
         </button>
-        <button onClick={() => setRating(4)}>
-          4 star
+        <button
+          onClick={() => setRating(4)}
+          className={`starButton ${rating >= 4 ? "active" : "inactive"}`}
+          id="fourStar"
+        >
+          <StarIcon className="star-icon" />
         </button>
-        <button onClick={() => setRating(5)}>
-          5 star
+        <button
+          onClick={() => setRating(5)}
+          className={`starButton ${rating >= 5 ? "active" : "inactive"}`}
+          id="fiveStar"
+        >
+          <StarIcon className="star-icon" />
         </button>
-        <button onClick={() => setRating(6)}>
-          6 star
+        <button
+          onClick={() => setRating(6)}
+          className={`starButton ${rating >= 6 ? "active" : "inactive"}`}
+          id="sixStar"
+        >
+          <StarIcon className="star-icon" />
         </button>
-        <button onClick={() => setRating(7)}>
-          7 star
+        <button
+          onClick={() => setRating(7)}
+          className={`starButton ${rating >= 7 ? "active" : "inactive"}`}
+          id="sevenStar"
+        >
+          <StarIcon className="star-icon" />
         </button>
-        <button onClick={() => setRating(8)}>
-          8 star
+        <button
+          onClick={() => setRating(8)}
+          className={`starButton ${rating >= 8 ? "active" : "inactive"}`}
+          id="eightStar"
+        >
+          <StarIcon className="star-icon" />
         </button>
-        <button onClick={() => setRating(9)}>
-          9 star
+        <button
+          onClick={() => setRating(9)}
+          className={`starButton ${rating >= 9 ? "active" : "inactive"}`}
+          id="nineStar"
+        >
+          <StarIcon className="star-icon" />
         </button>
-        <button onClick={() => setRating(10)}>
-          10 star
+        <button
+          onClick={() => setRating(10)}
+          className={`starButton ${rating >= 10 ? "active" : "inactive"}`}
+          id="tenStar"
+        >
+          <StarIcon className="star-icon" />
         </button>
         <br />
         {rating} Stars
@@ -141,10 +171,7 @@ function App() {
           placeholder="Thoughts on the movie"
         />
       </div>
-      <button onClick={handleonclick}>
-        Save Review
-      </button>
-
+      <button onClick={handleonclick}>Save Review</button>
 
       {/* <div>
         <a href="https://vite.dev" target="_blank">
