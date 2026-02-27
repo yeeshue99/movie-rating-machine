@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import "./App.css";
 import tempCover from "./assets/Test cover httyd.jpg";
-import StarIcon from "./assets/star.svg?react";
+import StarButton from "./components/StarButton";
 import { useDatabase } from "./db/Database";
 
 const STORE = "movies";
@@ -83,80 +83,12 @@ function App() {
         </div>
       </div>
       <div>
-        <button
-          onClick={() => setRating(1)}
-          className={`starButton ${rating >= 1 ? "active" : "inactive"}`}
-          id="oneStar"
-        >
-          <StarIcon className="star-icon" />
-        </button>
-        <button
-          onClick={() => setRating(2)}
-          className={`starButton ${rating >= 2 ? "active" : "inactive"}`}
-          id="twoStar"
-        >
-          <StarIcon className="star-icon" />
-        </button>
-        <button
-          onClick={() => setRating(3)}
-          className={`starButton ${rating >= 3 ? "active" : "inactive"}`}
-          id="threeStar"
-        >
-          <StarIcon className="star-icon" />
-        </button>
-        <button
-          onClick={() => setRating(4)}
-          className={`starButton ${rating >= 4 ? "active" : "inactive"}`}
-          id="fourStar"
-        >
-          <StarIcon className="star-icon" />
-        </button>
-        <button
-          onClick={() => setRating(5)}
-          className={`starButton ${rating >= 5 ? "active" : "inactive"}`}
-          id="fiveStar"
-        >
-          <StarIcon className="star-icon" />
-        </button>
-        <button
-          onClick={() => setRating(6)}
-          className={`starButton ${rating >= 6 ? "active" : "inactive"}`}
-          id="sixStar"
-        >
-          <StarIcon className="star-icon" />
-        </button>
-        <button
-          onClick={() => setRating(7)}
-          className={`starButton ${rating >= 7 ? "active" : "inactive"}`}
-          id="sevenStar"
-        >
-          <StarIcon className="star-icon" />
-        </button>
-        <button
-          onClick={() => setRating(8)}
-          className={`starButton ${rating >= 8 ? "active" : "inactive"}`}
-          id="eightStar"
-        >
-          <StarIcon className="star-icon" />
-        </button>
-        <button
-          onClick={() => setRating(9)}
-          className={`starButton ${rating >= 9 ? "active" : "inactive"}`}
-          id="nineStar"
-        >
-          <StarIcon className="star-icon" />
-        </button>
-        <button
-          onClick={() => setRating(10)}
-          className={`starButton ${rating >= 10 ? "active" : "inactive"}`}
-          id="tenStar"
-        >
-          <StarIcon className="star-icon" />
-        </button>
+        {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => (
+          <StarButton key={n} value={n} rating={rating} onClick={setRating} />
+        ))}
         <br />
         {rating} Stars
       </div>
-
       <div className="Reviews">
         <textarea
           ref={phrases}
