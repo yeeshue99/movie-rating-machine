@@ -16,6 +16,8 @@ interface Movie {
 
 function App() {
   const [rating, setRating] = useState(0);
+  const currentMovieTitle: string
+  const currentMoviePicture
   const { connector, isLoading, error } = useDatabase();
 
   const [movies, setMovies] = useState<Movie[]>([]);
@@ -33,6 +35,7 @@ function App() {
       console.error("Textarea refs are not set");
       return;
     }
+    saveReview(currentMovieTitle, rating, phrases.current.value, review.current.value)
     console.log("Phrases: " + phrases.current.value);
     console.log("Review: " + review.current.value);
     console.log("rating " + rating);
@@ -80,7 +83,7 @@ function App() {
       <div className="aboutMovie">
         <img src={tempCover} className="imageCover" alt="Movie Cover Picture" />
         <div id="movieName">
-          <h1>How to Train your Dragon</h1>
+          <h1>{currentMovieTitle}</h1>
           <h3>
             <p>
               A hapless young Viking who aspires to hunt dragons becomes the
