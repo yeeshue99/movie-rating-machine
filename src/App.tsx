@@ -19,7 +19,6 @@ function App() {
   const { connector, isLoading, error } = useDatabase();
 
   const [movies, setMovies] = useState<Movie[]>([]);
-  const [title, setTitle] = useState("");
 
   const phrases = useRef<HTMLTextAreaElement>(null);
   const review = useRef<HTMLTextAreaElement>(null);
@@ -45,21 +44,30 @@ function App() {
     }
   }, [isLoading, connector]);
 
-  const handleAdd = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!title.trim() || rating === "") return;
+  const saveReview = async (
+    title: string,
+    rating: number,
+    phrasesValue: string,
+    reviewValue: string,
+  ) => {
+    if (
+      !title.trim() ||
+      rating === 0 ||
+      !phrasesValue.trim() ||
+      !reviewValue.trim()
+    )
+      return;
     await connector.put<Movie>(STORE, {
       title: title.trim(),
       rating: Number(rating),
-      phrase: phrases.current.value,
-      review: review.current.value,
+      phrase: phrasesValue,
+      review: reviewValue,
     });
-    setTitle("");
-    setRating("");
+    setRating(0);
     await refresh();
   };
 
-  const handleDelete = async (id: number) => {
+  const deleteReview = async (id: number) => {
     await connector.delete(STORE, id);
     await refresh();
   };
@@ -104,28 +112,16 @@ function App() {
         />
       </div>
       <button onClick={handleonclick}>Save Review</button>
-
-      {/* <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p> */}
       <button onClick={handleonclick}>Save Review</button>
+      {movies.map((movie) => (
+        <div key={movie.id} className="movieReview">
+          <h2>{movie.title}</h2>
+          <p>Rating: {movie.rating} Stars</p>
+          <p>Phrases: {movie.phrase}</p>
+          <p>Review: {movie.review}</p>
+          <button onClick={() => deleteReview(movie.id!)}>Delete</button>
+        </div>
+      ))}
     </>
   );
 }
