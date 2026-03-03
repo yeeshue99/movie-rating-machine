@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import "./App.css";
-import tempCover from "./assets/Test cover httyd.jpg";
 import StarButton from "./components/StarButton";
 import { useDatabase } from "./db/Database";
+import { fetchMovieDetails } from "./db/MovieDB";
 
 const STORE = "movies";
 
@@ -14,11 +14,25 @@ interface Movie {
   review: string;
 }
 
+type MovieDetails = {
+  id: number;
+  title: string;
+  overview: string;
+  poster_path: string;
+};
+
 function App() {
   const [rating, setRating] = useState(0);
-  const currentMovieTitle: string
-  const currentMoviePicture
+  const [movieDetails, setMovieDetails] = useState<MovieDetails | null>(null);
   const { connector, isLoading, error } = useDatabase();
+
+  useEffect(() => {
+    const loadMovieDetails = async () => {
+      const details = await fetchMovieDetails(10191);
+      if (details) setMovieDetails(details);
+    };
+    loadMovieDetails();
+  }, []);
 
   const [movies, setMovies] = useState<Movie[]>([]);
 
@@ -35,7 +49,12 @@ function App() {
       console.error("Textarea refs are not set");
       return;
     }
-    saveReview(currentMovieTitle, rating, phrases.current.value, review.current.value)
+    saveReview(
+      currentMovieTitle,
+      rating,
+      phrases.current.value,
+      review.current.value,
+    );
     console.log("Phrases: " + phrases.current.value);
     console.log("Review: " + review.current.value);
     console.log("rating " + rating);
@@ -81,15 +100,19 @@ function App() {
   return (
     <>
       <div className="aboutMovie">
-        <img src={tempCover} className="imageCover" alt="Movie Cover Picture" />
+        <img
+          src={
+            movieDetails?.poster_path
+              ? `https://image.tmdb.org/t/p/w500${movieDetails.poster_path}`
+              : undefined
+          }
+          className="imageCover"
+          alt="Movie Cover Picture"
+        />
         <div id="movieName">
-          <h1>{currentMovieTitle}</h1>
+          <h1>{movieDetails?.title}</h1>
           <h3>
-            <p>
-              A hapless young Viking who aspires to hunt dragons becomes the
-              unlikely friend of a young dragon himself, and learns there may be
-              more to the creatures than he assumed.
-            </p>
+            <p>{movieDetails?.overview}</p>
           </h3>
         </div>
       </div>
