@@ -28,7 +28,7 @@ function App() {
 
   useEffect(() => {
     const loadMovieDetails = async () => {
-      const details = await fetchMovieDetails(10191);
+      const details = await fetchMovieDetails(1087192);
       if (details) setMovieDetails(details);
     };
     loadMovieDetails();
@@ -49,8 +49,11 @@ function App() {
       console.error("Textarea refs are not set");
       return;
     }
+    if (!movieDetails) {
+      return
+    };
     saveReview(
-      currentMovieTitle,
+      movieDetails.title,
       rating,
       phrases.current.value,
       review.current.value,
