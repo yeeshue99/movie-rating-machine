@@ -106,3 +106,17 @@
 .read-the-docs {
   color: #888;
 }
+
+.searchMovies {
+  position: absolute;
+  width: 30vh;
+  height: 35px;
+  top: 2vh;
+  left: 50vw;
+  transform: translate(-50%, -50%);
+}
+
+.searchBox {
+  height: 100%;
+  width: 75%;
+}
