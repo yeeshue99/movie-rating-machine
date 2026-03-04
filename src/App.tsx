@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import "./App.css";
 import StarButton from "./components/StarButton";
 import { useDatabase } from "./db/Database";
-import { fetchMovieDetails } from "./db/MovieDB";
+import { fetchMovieDetails, searchMovieByTitle } from "./db/MovieDB";
 
 const STORE = "movies";
 
@@ -70,10 +70,15 @@ function App() {
       return;
     }
     console.log("you searched " + search.current.value);
-    const newSearchValue = Number(search.current.value);
+    const newSearchValue = search.current.value;
 
     const loadMovieDetails = async () => {
-      const details = await fetchMovieDetails(newSearchValue);
+      const movieID = await searchMovieByTitle(newSearchValue);
+      if (!movieID) {
+        console.error("No Movie Found");
+        return;
+      }
+      const details = await fetchMovieDetails(movieID.id);
       if (details) setMovieDetails(details);
     };
     loadMovieDetails();
@@ -118,8 +123,9 @@ function App() {
 
   return (
     <>
+      {/* TODO: Multiple search results */}
       <div className="searchMovies">
-        <input type="number" className="searchBox" ref={search} />
+        <input type="text" className="searchBox" ref={search} />
         <button onClick={handleSearch}>Search</button>
       </div>
       <div className="aboutMovie">
