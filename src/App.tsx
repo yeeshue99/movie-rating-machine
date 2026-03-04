@@ -27,7 +27,6 @@ function App() {
   const { connector, isLoading, error } = useDatabase();
 
   useEffect(() => {
-
     const loadMovieDetails = async () => {
       const details = await fetchMovieDetails(10191);
       if (details) setMovieDetails(details);
@@ -52,8 +51,8 @@ function App() {
       return;
     }
     if (!movieDetails) {
-      return
-    };
+      return;
+    }
     saveReview(
       movieDetails.title,
       rating,
@@ -67,20 +66,18 @@ function App() {
 
   const handleSearch = () => {
     if (!search.current) {
-      console.error("no search")
-      return
-    };
-    console.log("you searched " + search.current.value)
-    var newSearchValue: number
-    newSearchValue = Number(search.current.value)
+      console.error("no search");
+      return;
+    }
+    console.log("you searched " + search.current.value);
+    const newSearchValue = Number(search.current.value);
 
     const loadMovieDetails = async () => {
       const details = await fetchMovieDetails(newSearchValue);
       if (details) setMovieDetails(details);
     };
     loadMovieDetails();
-
-  }
+  };
 
   useEffect(() => {
     if (!isLoading) {
@@ -120,7 +117,6 @@ function App() {
   if (error) return <p style={{ color: "red" }}>Database error: {error}</p>;
 
   return (
-
     <>
       <div className="searchMovies">
         <input type="number" className="searchBox" ref={search} />
